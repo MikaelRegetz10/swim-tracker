@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 @Table(name = "partial")
@@ -17,19 +18,22 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Partial implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToMany
-    @JoinColumn(name = "proof_id", referencedColumnName = "id")
+    @ManyToOne
+    @JoinColumn(name = "proof_id")
     private Proof proof;
 
-    @ManyToMany
-    @JoinColumn(name = "athlete_id", referencedColumnName = "id")
+    @ManyToOne
+    @JoinColumn(name = "athlete_id")
     private Athlete athlete;
 
-    private Integer partial_number;
+    private Integer partialNumber;
     private Float time;
     private Float frequency;
 

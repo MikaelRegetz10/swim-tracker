@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -16,12 +17,15 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Competition implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     private Date date;
     private String name;
-    private PoolType pool_type;
+    private Integer poolType;
 
 }
