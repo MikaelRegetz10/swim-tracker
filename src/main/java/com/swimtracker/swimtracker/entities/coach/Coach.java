@@ -33,6 +33,11 @@ public class Coach implements Serializable {
     private String name;
     private String team;
 
+    public Coach(Users users, String name, String team) {
+        this.users = users;
+        this.name = name;
+        this.team = team;
+    }
 
 
 

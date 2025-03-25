@@ -44,7 +44,8 @@ public class Users implements Serializable, UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (this.roles == UserRoles.ADM || this.roles == UserRoles.TECNICO) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+        if (this.roles == UserRoles.ADM) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+        else if (this.roles == UserRoles.TECNICO) return List.of(new SimpleGrantedAuthority("ROLE_TECNICO"));
         else return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
