@@ -36,6 +36,15 @@ public class Partial implements Serializable {
     private Integer partialNumber;
     private Float time;
     private Float frequency;
+    private Integer serie;
 
+    public Partial(Proof proof, Athlete athlete, Integer partialNumber, Float time, Float frequency, Integer serie) {
+        this.proof = proof;
+        this.athlete = athlete;
+        this.partialNumber = partialNumber;
+        this.time = time;
+        this.frequency = frequency;
+        this.serie = serie;
+    }
 
 }

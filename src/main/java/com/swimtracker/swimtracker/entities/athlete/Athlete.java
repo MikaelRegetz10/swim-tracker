@@ -39,5 +39,13 @@ public class Athlete implements Serializable {
     @JoinColumn(name = "coach_id")
     private Coach coach;
 
+    public Athlete(String name, String category, Coach coach, Users users) {
+        this.name = name;
+        this.category = category;
+        this.coach = coach;
+        this.users = users;
+    }
+
+
 
 }

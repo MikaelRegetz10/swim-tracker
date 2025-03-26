@@ -27,14 +27,14 @@ CREATE TABLE  competition(
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     date DATE NOT NULL,
     name VARCHAR(100) NOT NULL,
-    poolType INT
+    pool_type INT
 );
 
 CREATE TABLE  proof(
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     competition_id BIGINT NOT NULL,
     distance INT,
-    styleType ENUM('CRAWL', 'BORBOLETA', 'PEITO', 'COSTAS') NOT NULL,
+    style_type ENUM('CRAWL', 'BORBOLETA', 'PEITO', 'COSTAS') NOT NULL,
     FOREIGN KEY (competition_id) REFERENCES competition(id) ON DELETE CASCADE
 );
 
@@ -42,9 +42,10 @@ CREATE TABLE  partial(
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     athlete_id BIGINT,
     proof_id BIGINT,
-    partialNumber INT,
+    partial_number INT,
     time FLOAT,
     frequency FLOAT,
+    serie INT,
     FOREIGN KEY (athlete_id) REFERENCES athlete(id) ON DELETE CASCADE,
     FOREIGN KEY (proof_id) REFERENCES proof(id) ON DELETE CASCADE
 )

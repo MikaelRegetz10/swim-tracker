@@ -1,6 +1,7 @@
 package com.swimtracker.swimtracker.controller;
 
 import com.swimtracker.swimtracker.entities.coach.Coach;
+import com.swimtracker.swimtracker.entities.coach.RegisterCoachDTO;
 import com.swimtracker.swimtracker.entities.user.*;
 import com.swimtracker.swimtracker.exceptions.InvalidPasswordException;
 import com.swimtracker.swimtracker.infra.security.PasswordService;
@@ -56,7 +57,7 @@ public class AuthenticationController {
 
     }
 
-    @PostMapping("/registro-tecnico")
+    @PostMapping("/registrar-tecnico")
     public ResponseEntity<?> registerCoach(@RequestBody RegisterCoachDTO data){
         if(this.usersRepository.findByLogin(data.login()) != null) return ResponseEntity.badRequest().build();
 

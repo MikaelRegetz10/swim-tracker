@@ -1,6 +1,7 @@
 package com.swimtracker.swimtracker.infra;
 
 import com.swimtracker.swimtracker.exceptions.DefaultPasswordException;
+import com.swimtracker.swimtracker.exceptions.IncompleteNameException;
 import com.swimtracker.swimtracker.exceptions.InvalidPasswordException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,12 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(InvalidPasswordException.class)
     private ResponseEntity<RestErrorMessage> invalidPasswordHandler(InvalidPasswordException ex) {
         RestErrorMessage response = new RestErrorMessage(HttpStatus.FORBIDDEN, ex.getMessage(), HttpStatus.FORBIDDEN.value());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
+    }
+
+    @ExceptionHandler(IncompleteNameException.class)
+    private ResponseEntity<RestErrorMessage> incompleteNameHandler(IncompleteNameException ex) {
+        RestErrorMessage response = new RestErrorMessage(HttpStatus.BAD_REQUEST, ex.getMessage(), HttpStatus.BAD_REQUEST.value());
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
     }
 
