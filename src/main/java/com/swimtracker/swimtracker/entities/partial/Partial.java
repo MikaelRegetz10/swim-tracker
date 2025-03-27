@@ -37,6 +37,8 @@ public class Partial implements Serializable {
     private Float time;
     private Float frequency;
     private Integer serie;
+    private Integer finish;
+
 
     public Partial(Proof proof, Athlete athlete, Integer partialNumber, Float time, Float frequency, Integer serie) {
         this.proof = proof;
@@ -47,4 +49,16 @@ public class Partial implements Serializable {
         this.serie = serie;
     }
 
+    @Override
+    public String toString() {
+        return "Partial{" +
+                "athlete=" + athlete +
+                ", id=" + id +
+                ", proof=" + proof +
+                ", partialNumber=" + partialNumber +
+                ", time=" + time +
+                ", frequency=" + frequency +
+                ", serie=" + serie +
+                '}';
+    }
 }

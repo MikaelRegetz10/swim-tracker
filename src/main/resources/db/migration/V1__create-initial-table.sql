@@ -27,7 +27,8 @@ CREATE TABLE  competition(
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     date DATE NOT NULL,
     name VARCHAR(100) NOT NULL,
-    pool_type INT
+    pool_type INT,
+    finish INT DEFAULT 0
 );
 
 CREATE TABLE  proof(
@@ -49,3 +50,5 @@ CREATE TABLE  partial(
     FOREIGN KEY (athlete_id) REFERENCES athlete(id) ON DELETE CASCADE,
     FOREIGN KEY (proof_id) REFERENCES proof(id) ON DELETE CASCADE
 )
+
+
