@@ -4,8 +4,7 @@ import com.swimtracker.swimtracker.entities.athlete.Athlete;
 import com.swimtracker.swimtracker.entities.athlete.RegisterAthleteDTO;
 import com.swimtracker.swimtracker.entities.coach.Coach;
 import com.swimtracker.swimtracker.entities.competition.CreateCompetitionDTO;
-import com.swimtracker.swimtracker.entities.competition.ResponseCompetitionDTO;
-import com.swimtracker.swimtracker.entities.partial.PartialResponseDTO;
+import com.swimtracker.swimtracker.entities.competition.ResponseCreateCompetitionDTO;
 import com.swimtracker.swimtracker.entities.partial.UpdatePartialDTO;
 import com.swimtracker.swimtracker.entities.user.Users;
 import com.swimtracker.swimtracker.repository.AthleteRepository;
@@ -60,7 +59,7 @@ public class CoachController {
 
     @PostMapping("/criar-competicao")
     public ResponseEntity<?> createCompetition(@RequestBody CreateCompetitionDTO data){
-        ResponseCompetitionDTO response = competitionService.createCompetition(data);
+        ResponseCreateCompetitionDTO response = competitionService.createCompetition(data);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 

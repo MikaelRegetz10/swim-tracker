@@ -3,7 +3,7 @@ package com.swimtracker.swimtracker.infra;
 import com.swimtracker.swimtracker.exceptions.DefaultPasswordException;
 import com.swimtracker.swimtracker.exceptions.IncompleteNameException;
 import com.swimtracker.swimtracker.exceptions.InvalidPasswordException;
-import com.swimtracker.swimtracker.exceptions.PartialNotFoundException;
+import com.swimtracker.swimtracker.exceptions.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -31,8 +31,8 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
-    @ExceptionHandler(PartialNotFoundException.class)
-    private ResponseEntity<RestErrorMessage> partialNotFoundHandler(PartialNotFoundException ex) {
+    @ExceptionHandler(NotFoundException.class)
+    private ResponseEntity<RestErrorMessage> notFoundHandler(NotFoundException ex) {
         RestErrorMessage response = new RestErrorMessage(HttpStatus.NOT_FOUND, ex.getMessage(), HttpStatus.NOT_FOUND.value());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }

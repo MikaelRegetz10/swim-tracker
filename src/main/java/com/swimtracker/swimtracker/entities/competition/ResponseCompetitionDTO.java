@@ -1,16 +1,9 @@
 package com.swimtracker.swimtracker.entities.competition;
 
-import com.swimtracker.swimtracker.entities.proof.StyleType;
+import com.swimtracker.swimtracker.entities.proof.ProofResponseDTO;
 
-import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
-public record ResponseCompetitionDTO (String name, Integer distance, LocalDate date, List<StyleType> proofsList) {
-
-    public ResponseCompetitionDTO(String name, Integer distance, LocalDate date, List<StyleType> proofsList) {
-        this.name = name;
-        this.distance = distance;
-        this.date = date;
-        this.proofsList = proofsList;
-    }
-}
+public record ResponseCompetitionDTO(String competitionName,
+                                     Map<String, List<ProofResponseDTO>> proofs) {}

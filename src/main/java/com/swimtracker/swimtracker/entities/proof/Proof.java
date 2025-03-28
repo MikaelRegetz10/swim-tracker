@@ -39,13 +39,17 @@ public class Proof implements Serializable {
     @Enumerated(EnumType.ORDINAL)
     private StyleType styleType;
 
+    private Integer proofOrder;
+
+    @JsonIgnore
     @OneToMany(mappedBy = "proof", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Partial> partials = new ArrayList<>();
 
-    public Proof(Integer distance, StyleType styleType, Competition competition) {
+    public Proof(Integer distance, StyleType styleType, Integer proofOrder, Competition competition) {
         this.distance = distance;
         this.styleType = styleType;
         this.competition = competition;
+        this.proofOrder = proofOrder;
     }
 
 }

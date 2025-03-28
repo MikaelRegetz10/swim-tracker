@@ -37,7 +37,6 @@ public class Partial implements Serializable {
     private Float time;
     private Float frequency;
     private Integer serie;
-    private Integer finish;
 
 
     public Partial(Proof proof, Athlete athlete, Integer partialNumber, Float time, Float frequency, Integer serie) {

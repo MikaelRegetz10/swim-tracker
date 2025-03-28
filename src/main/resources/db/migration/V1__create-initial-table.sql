@@ -27,8 +27,7 @@ CREATE TABLE  competition(
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     date DATE NOT NULL,
     name VARCHAR(100) NOT NULL,
-    pool_type INT,
-    finish INT DEFAULT 0
+    pool_type INT
 );
 
 CREATE TABLE  proof(
