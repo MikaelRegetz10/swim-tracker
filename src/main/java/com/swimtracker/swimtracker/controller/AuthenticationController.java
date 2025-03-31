@@ -3,13 +3,17 @@ package com.swimtracker.swimtracker.controller;
 import com.swimtracker.swimtracker.entities.coach.Coach;
 import com.swimtracker.swimtracker.entities.coach.RegisterCoachDTO;
 import com.swimtracker.swimtracker.entities.user.*;
+import com.swimtracker.swimtracker.exceptions.HaveEqualLoginException;
 import com.swimtracker.swimtracker.exceptions.InvalidPasswordException;
+import com.swimtracker.swimtracker.exceptions.UserNotFoundException;
+import com.swimtracker.swimtracker.infra.RestResponseMessage;
 import com.swimtracker.swimtracker.infra.security.PasswordService;
 import com.swimtracker.swimtracker.infra.security.TokenService;
 import com.swimtracker.swimtracker.repository.CoachRepository;
 import com.swimtracker.swimtracker.repository.UsersRepository;
 import com.swimtracker.swimtracker.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -59,7 +63,7 @@ public class AuthenticationController {
 
     @PostMapping("/registrar-tecnico")
     public ResponseEntity<?> registerCoach(@RequestBody RegisterCoachDTO data){
-        if(this.usersRepository.findByLogin(data.login()) != null) return ResponseEntity.badRequest().build();
+        if(this.usersRepository.findByLogin(data.login()).isPresent()) throw new HaveEqualLoginException();
 
         String encryptedPassword = passwordService.encodePassword(data.password());
         Users newUser = new Users(data.login(), encryptedPassword, data.role());
@@ -73,7 +77,7 @@ public class AuthenticationController {
 
     @PostMapping("/registro")
     public ResponseEntity<?> register(@RequestBody RegisterUserDTO data){
-        if(this.usersRepository.findByLogin(data.login()) != null) return ResponseEntity.badRequest().build();
+        if(this.usersRepository.findByLogin(data.login()).isPresent()) throw new HaveEqualLoginException();
 
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
         Users newUser = new Users(data.login(), encryptedPassword, data.role());
@@ -85,7 +89,7 @@ public class AuthenticationController {
     @PostMapping("/trocar-senha")
     public ResponseEntity<?> tradePassword(@RequestBody TradePasswordDTO data){
         String subject = SecurityContextHolder.getContext().getAuthentication().getName();
-        UserDetails user = usersRepository.findByLogin(subject);
+        UserDetails user = usersRepository.findByLogin(subject).orElseThrow(UserNotFoundException::new);
         if (!userService.tradePassword((Users) user, data)) return ResponseEntity.badRequest().build();
 
         return ResponseEntity.ok().body("Senha alterada com sucesso");

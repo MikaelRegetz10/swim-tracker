@@ -1,5 +1,6 @@
 package com.swimtracker.swimtracker.infra.security;
 
+import com.swimtracker.swimtracker.exceptions.UserNotFoundException;
 import com.swimtracker.swimtracker.repository.UsersRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -28,7 +29,7 @@ public class SecurityFilter extends OncePerRequestFilter {
         String token = this.recoverToken(request);
         if (token != null) {
             String login = tokenService.validateToken(token);
-            UserDetails user = usersRepository.findByLogin(login);
+            UserDetails user = usersRepository.findByLogin(login).orElseThrow(UserNotFoundException::new);
 
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);

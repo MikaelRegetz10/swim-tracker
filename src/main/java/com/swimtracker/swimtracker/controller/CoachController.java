@@ -7,6 +7,7 @@ import com.swimtracker.swimtracker.entities.competition.CreateCompetitionDTO;
 import com.swimtracker.swimtracker.entities.competition.ResponseCreateCompetitionDTO;
 import com.swimtracker.swimtracker.entities.partial.UpdatePartialDTO;
 import com.swimtracker.swimtracker.entities.user.Users;
+import com.swimtracker.swimtracker.exceptions.UserNotFoundException;
 import com.swimtracker.swimtracker.repository.AthleteRepository;
 import com.swimtracker.swimtracker.repository.CoachRepository;
 import com.swimtracker.swimtracker.repository.UsersRepository;
@@ -49,7 +50,7 @@ public class CoachController {
     @PostMapping("/adiconar-atleta")
     public ResponseEntity<?> addAthlete(@RequestBody RegisterAthleteDTO data){
         String subject = SecurityContextHolder.getContext().getAuthentication().getName();
-        UserDetails users = usersRepository.findByLogin(subject);
+        UserDetails users = usersRepository.findByLogin(subject).orElseThrow(UserNotFoundException::new);
         Coach coach = coachRepository.findByUsers((Users) users);
 
         Athlete athlete = coachService.registerAthlete(data, coach);
@@ -72,7 +73,7 @@ public class CoachController {
     @GetMapping("/meus-atletas")
     public ResponseEntity<?> getAllAthletes(){
         String subject = SecurityContextHolder.getContext().getAuthentication().getName();
-        UserDetails users = usersRepository.findByLogin(subject);
+        UserDetails users = usersRepository.findByLogin(subject).orElseThrow(UserNotFoundException::new);
         Coach coach = coachRepository.findByUsers((Users) users);
         List<Athlete> athletes = athleteRepository.findByCoach(coach);
         if (athletes.isEmpty()) {

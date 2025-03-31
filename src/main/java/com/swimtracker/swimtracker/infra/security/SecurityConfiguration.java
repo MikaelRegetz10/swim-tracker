@@ -34,6 +34,7 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.PATCH, "/tecnico").hasRole("TECNICO")
                         .requestMatchers(HttpMethod.GET, "/competicao").hasRole("TECNICO")
                         .requestMatchers(HttpMethod.GET, "/parciais").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/user").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

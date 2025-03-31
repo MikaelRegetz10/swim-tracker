@@ -1,5 +1,6 @@
 package com.swimtracker.swimtracker.services;
 
+import com.swimtracker.swimtracker.exceptions.UserNotFoundException;
 import com.swimtracker.swimtracker.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,7 +14,7 @@ public class AutorizationService implements UserDetailsService {
     UsersRepository usersRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return usersRepository.findByLogin(username);
+    public UserDetails loadUserByUsername(String username) throws UserNotFoundException {
+        return usersRepository.findByLogin(username).orElseThrow(() -> new UsernameNotFoundException(username));
     }
 }

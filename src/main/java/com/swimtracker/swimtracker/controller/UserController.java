@@ -19,13 +19,12 @@ import java.util.List;
 public class UserController {
 
     @Autowired
-    private UsersRepository service;
+    private UsersRepository repository;
 
     @GetMapping
-    public ResponseEntity<UserDetails> returnUser(){
-        String subject = SecurityContextHolder.getContext().getAuthentication().getName();
-        UserDetails user = service.findByLogin(subject);
-
-        return ResponseEntity.ok().body(user);
+    public ResponseEntity<List<Users>> returnUser(){
+        List<Users> allUsers = repository.findAll();
+        
+        return ResponseEntity.ok().body(allUsers);
     }
 }

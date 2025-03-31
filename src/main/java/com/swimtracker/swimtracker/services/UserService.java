@@ -21,12 +21,6 @@ public class UserService {
     @Autowired
     private PasswordService passwordService;
 
-    public List<Users> getAll(){
-        List<Users> user = repository.findAll();
-        System.out.println(user);
-        return repository.findAll();
-    }
-
     @Transactional
     public boolean tradePassword(Users user, TradePasswordDTO data){
         if (!passwordService.verifyPassword(data.defaultPassword(), user.getPassword()) || !data.newPassword().equals(data.confirmPassword())) throw new InvalidPasswordException();

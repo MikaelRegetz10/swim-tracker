@@ -7,7 +7,6 @@ import com.swimtracker.swimtracker.entities.competition.ResponseCompetitionDTO;
 import com.swimtracker.swimtracker.entities.competition.ResponseCreateCompetitionDTO;
 import com.swimtracker.swimtracker.entities.partial.Partial;
 import com.swimtracker.swimtracker.entities.partial.PartialCompetitionResponseDTO;
-import com.swimtracker.swimtracker.entities.proof.CreateProofDTO;
 import com.swimtracker.swimtracker.entities.proof.Proof;
 import com.swimtracker.swimtracker.entities.proof.ProofResponseDTO;
 import com.swimtracker.swimtracker.entities.proof.StyleType;
