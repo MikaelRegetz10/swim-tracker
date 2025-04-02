@@ -6,14 +6,12 @@ import com.swimtracker.swimtracker.entities.user.*;
 import com.swimtracker.swimtracker.exceptions.HaveEqualLoginException;
 import com.swimtracker.swimtracker.exceptions.InvalidPasswordException;
 import com.swimtracker.swimtracker.exceptions.UserNotFoundException;
-import com.swimtracker.swimtracker.infra.RestResponseMessage;
 import com.swimtracker.swimtracker.infra.security.PasswordService;
 import com.swimtracker.swimtracker.infra.security.TokenService;
 import com.swimtracker.swimtracker.repository.CoachRepository;
 import com.swimtracker.swimtracker.repository.UsersRepository;
 import com.swimtracker.swimtracker.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -26,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("auth")
+@CrossOrigin
 public class AuthenticationController {
 
     @Autowired
@@ -52,9 +51,12 @@ public class AuthenticationController {
         try{
             UsernamePasswordAuthenticationToken usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
             Authentication auth = this.authenticationManager.authenticate(usernamePassword);
-            String token = tokenService.generateToken((Users) auth.getPrincipal());
+            Users users = (Users) auth.getPrincipal();
+            String token = tokenService.generateToken(users);
+            UsersResponseDTO userResponse = new UsersResponseDTO(users);
 
-            return ResponseEntity.ok(new LoginResponseDTO(token));
+
+            return ResponseEntity.ok(new LoginResponseDTO(token, userResponse));
         } catch (BadCredentialsException e){
             throw new InvalidPasswordException();
         }

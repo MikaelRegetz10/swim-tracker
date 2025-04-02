@@ -2,6 +2,7 @@ package com.swimtracker.swimtracker.services;
 
 import com.swimtracker.swimtracker.entities.athlete.Athlete;
 import com.swimtracker.swimtracker.entities.partial.Partial;
+import com.swimtracker.swimtracker.entities.partial.PartialDTO;
 import com.swimtracker.swimtracker.entities.partial.PartialResponseDTO;
 import com.swimtracker.swimtracker.entities.partial.UpdatePartialDTO;
 import com.swimtracker.swimtracker.entities.proof.Proof;
@@ -36,8 +37,9 @@ public class PartialService {
         return partials;
     }
 
-    private List<PartialResponseDTO> generateResponseDTO(Map<String, Map<String, Map<String, Map<Integer, Float>>>> groupedPartials) {
+    private List<PartialResponseDTO> generateResponseDTO(Map<String, Map<String, Map<String, List<PartialDTO>>>> groupedPartials) {
         List<PartialResponseDTO> responseDTOs = new ArrayList<>();
+
         for (var competitionEntry : groupedPartials.entrySet()) {
             String competitionName = competitionEntry.getKey();
             for (var athleteEntry : competitionEntry.getValue().entrySet()) {
@@ -47,24 +49,27 @@ public class PartialService {
                 }
             }
         }
+
         return responseDTOs;
     }
 
     public List<PartialResponseDTO> getPartialByAthletes(List<Athlete> athletes) {
         List<Partial> partials = partialRepository.findByAthleteIn(athletes);
 
-        Map<String, Map<String, Map<String, Map<Integer, Float>>>> groupedPartials = new HashMap<>();
+        Map<String, Map<String, Map<String, List<PartialDTO>>>> groupedPartials = new HashMap<>();
 
         for (Partial partial : partials) {
             String competitionName = partial.getProof().getCompetition().getName();
             String athleteName = partial.getAthlete().getName();
             String proof = partial.getProof().getDistance() + " " + partial.getProof().getStyleType();
+            int meters = partial.getPartialNumber() * partial.getProof().getCompetition().getPoolType();
+            Float time = partial.getTime();
 
             groupedPartials
                     .computeIfAbsent(competitionName, k -> new HashMap<>())
                     .computeIfAbsent(athleteName, k -> new HashMap<>())
-                    .computeIfAbsent(proof, k -> new HashMap<>())
-                    .put(partial.getPartialNumber() * partial.getProof().getCompetition().getPoolType(), partial.getTime());
+                    .computeIfAbsent(proof, k -> new ArrayList<>())
+                    .add(new PartialDTO(meters, time));
         }
 
         return generateResponseDTO(groupedPartials);

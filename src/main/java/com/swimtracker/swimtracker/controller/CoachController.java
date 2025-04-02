@@ -26,6 +26,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("tecnico")
+@CrossOrigin
 public class CoachController {
 
     @Autowired
