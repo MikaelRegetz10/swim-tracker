@@ -34,7 +34,7 @@ CREATE TABLE  proof(
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     competition_id BIGINT NOT NULL,
     distance INT,
-    style_type ENUM('CRAWL', 'BORBOLETA', 'PEITO', 'COSTAS') NOT NULL,
+    style_type ENUM('CRAWL', 'BORBOLETA', 'PEITO', 'COSTAS', 'MEDLEY') NOT NULL,
     FOREIGN KEY (competition_id) REFERENCES competition(id) ON DELETE CASCADE
 );
 

@@ -26,16 +26,24 @@ public class SecurityFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String token = this.recoverToken(request);
-        if (token != null) {
-            String login = tokenService.validateToken(token);
-            UserDetails user = usersRepository.findByLogin(login).orElseThrow(UserNotFoundException::new);
+        try {
+            String token = this.recoverToken(request);
+            if (token != null) {
+                String login = tokenService.validateToken(token);
+                UserDetails user = usersRepository.findByLogin(login).orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
 
-            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
+            filterChain.doFilter(request, response);
+        } catch (UserNotFoundException ex) {
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            response.getWriter().write("{\"error\": \"Usuario nao encontrado\"}");
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
         }
-        filterChain.doFilter(request, response);
     }
+
 
     private String recoverToken(HttpServletRequest request) {
         String authHeader = request.getHeader("Authorization");
