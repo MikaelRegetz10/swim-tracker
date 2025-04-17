@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/competicao")
 @CrossOrigin
@@ -22,9 +24,14 @@ public class CompetitionController {
     private CompetitonRepository competitonRepository;
 
     @GetMapping("/{name}")
-    public ResponseEntity<ResponseCompetitionDTO> getCompetitions(@PathVariable String name) {
-        Competition competition = competitonRepository.findByName(name).orElseThrow(()-> new NotFoundException(name));
-        ResponseCompetitionDTO responseCompetitionDTO = competitionService.getCompetition(competition);
+    public ResponseEntity<List<ResponseCompetitionDTO>> getCompetitions(@PathVariable String name) {
+        List<Competition> competitions = competitonRepository.findByNameContainingIgnoreCase(name);
+
+        if (competitions.isEmpty()) {
+            throw new NotFoundException("Competicao " + name);
+        }
+
+        List<ResponseCompetitionDTO> responseCompetitionDTO = competitionService.getCompetitions(competitions);
         return ResponseEntity.status(HttpStatus.OK).body(responseCompetitionDTO);
     }
 }

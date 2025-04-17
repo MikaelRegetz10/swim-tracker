@@ -64,19 +64,28 @@ public class CompetitionService {
         );
     }
 
-    public ResponseCompetitionDTO getCompetition(Competition competition) {
+    private ResponseCompetitionDTO createResponseDTO(Competition competition, Map<String, List<ProofResponseDTO>> proofs) {
+        return new ResponseCompetitionDTO(competition.getName(), proofs);
+    }
 
-        List<Partial> partials = partialRepository.findByCompetition(competition.getId());
+    public List<ResponseCompetitionDTO> getCompetitions(List<Competition> competitions) {
+        List<ResponseCompetitionDTO> responseDTOs = new ArrayList<>();
 
-        Map<String, List<ProofResponseDTO>> proofsMap = new LinkedHashMap<>();
+        for (Competition competition : competitions) {
+            List<Partial> partials = partialRepository.findByCompetition(competition.getId());
 
-        for (Partial partial : partials) {
-            String proofName = partial.getProof().getDistance() + " " + partial.getProof().getStyleType();
-            ProofResponseDTO proofResponseDTO = createJsonResponse(proofName, partial);
-            proofsMap.computeIfAbsent(proofName, k -> new ArrayList<>()).add(proofResponseDTO);
+            Map<String, List<ProofResponseDTO>> proofsMap = new LinkedHashMap<>();
+
+            for (Partial partial : partials) {
+                String proofName = partial.getProof().getDistance() + " " + partial.getProof().getStyleType();
+                ProofResponseDTO proofResponseDTO = createJsonResponse(proofName, partial);
+                proofsMap.computeIfAbsent(proofName, k -> new ArrayList<>()).add(proofResponseDTO);
+            }
+
+            responseDTOs.add(createResponseDTO(competition, proofsMap));
         }
 
-        return new ResponseCompetitionDTO(competition.getName(), proofsMap);
+        return responseDTOs;
     }
 
 }

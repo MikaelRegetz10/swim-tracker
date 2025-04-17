@@ -25,8 +25,8 @@ public class PartialController {
     private PartialService partialService;
 
     @GetMapping
-    public ResponseEntity<List<PartialResponseDTO>> findPartialByAthlete(@RequestParam String atleta) {
-        List<Athlete> athletes = athleteRepository.findByNameContainingIgnoreCase(atleta);
+    public ResponseEntity<List<PartialResponseDTO>> findPartialByAthlete(@RequestParam String atlhetes) {
+        List<Athlete> athletes = athleteRepository.findByNameContainingIgnoreCase(atlhetes);
 
         List<PartialResponseDTO> response = partialService.getPartialByAthletes(athletes);
 

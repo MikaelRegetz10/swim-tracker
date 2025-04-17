@@ -6,6 +6,7 @@ import com.swimtracker.swimtracker.entities.partial.PartialDTO;
 import com.swimtracker.swimtracker.entities.partial.PartialResponseDTO;
 import com.swimtracker.swimtracker.entities.partial.UpdatePartialDTO;
 import com.swimtracker.swimtracker.entities.proof.Proof;
+import com.swimtracker.swimtracker.entities.proof.SerieDTO;
 import com.swimtracker.swimtracker.exceptions.NotFoundException;
 import com.swimtracker.swimtracker.repository.AthleteRepository;
 import com.swimtracker.swimtracker.repository.PartialRepository;
@@ -27,11 +28,11 @@ public class PartialService {
     @Autowired
     private PartialRepository partialRepository;
 
-    protected List<Partial> processPartials(Proof proof, Map<Integer, List<Long>> series) {
+    protected List<Partial> processPartials(Proof proof, List<SerieDTO> series) {
         List<Partial> partials = new ArrayList<>();
 
-        for (Map.Entry<Integer, List<Long>> entry : series.entrySet()) {
-            partials.addAll(generatePartials(proof, entry.getValue(), entry.getKey()));
+        for (SerieDTO serie : series) {
+            partials.addAll(generatePartials(proof, serie.athletes(), serie.serieNumber()));
         }
 
         return partials;
