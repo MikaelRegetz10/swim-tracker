@@ -61,6 +61,7 @@ public class CoachController {
 
     @PostMapping("/criar-competicao")
     public ResponseEntity<?> createCompetition(@RequestBody CreateCompetitionDTO data){
+        System.out.println(data);
         ResponseCreateCompetitionDTO response = competitionService.createCompetition(data);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
@@ -76,7 +77,7 @@ public class CoachController {
         String subject = SecurityContextHolder.getContext().getAuthentication().getName();
         UserDetails users = usersRepository.findByLogin(subject).orElseThrow(UserNotFoundException::new);
         Coach coach = coachRepository.findByUsers((Users) users);
-        List<Athlete> athletes = athleteRepository.findByCoach(coach);
+        List<Athlete> athletes = athleteRepository.findByCoachOrderByNameAsc(coach);
         if (athletes.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }

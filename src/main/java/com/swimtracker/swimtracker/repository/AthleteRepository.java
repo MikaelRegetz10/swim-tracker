@@ -14,5 +14,5 @@ import java.util.Optional;
 public interface AthleteRepository extends JpaRepository<Athlete, Long> {
     Optional<Athlete> findById(Long id);
     List<Athlete> findByNameContainingIgnoreCase(String name);
-    List<Athlete> findByCoach(Coach coach);
+    List<Athlete> findByCoachOrderByNameAsc(Coach coach);
 }

@@ -1,11 +1,10 @@
 package com.swimtracker.swimtracker.controller;
 
 import com.swimtracker.swimtracker.entities.athlete.Athlete;
-import com.swimtracker.swimtracker.entities.partial.Partial;
 import com.swimtracker.swimtracker.entities.partial.PartialResponseDTO;
 import com.swimtracker.swimtracker.repository.AthleteRepository;
-import com.swimtracker.swimtracker.repository.PartialRepository;
 import com.swimtracker.swimtracker.services.PartialService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,13 +24,12 @@ public class PartialController {
     private PartialService partialService;
 
     @GetMapping
-    public ResponseEntity<List<PartialResponseDTO>> findPartialByAthlete(@RequestParam String atlhetes) {
-        List<Athlete> athletes = athleteRepository.findByNameContainingIgnoreCase(atlhetes);
+    public ResponseEntity<List<PartialResponseDTO>> findPartialByAthlete(@RequestParam String atleta) {
+        List<Athlete> athletes = athleteRepository.findByNameContainingIgnoreCase(atleta);
 
         List<PartialResponseDTO> response = partialService.getPartialByAthletes(athletes);
 
         return ResponseEntity.ok().body(response);
     }
-
 
 }

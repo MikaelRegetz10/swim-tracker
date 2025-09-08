@@ -63,7 +63,15 @@ public class PartialService {
             String competitionName = partial.getProof().getCompetition().getName();
             String athleteName = partial.getAthlete().getName();
             String proof = partial.getProof().getDistance() + " " + partial.getProof().getStyleType();
-            int meters = partial.getPartialNumber() * partial.getProof().getCompetition().getPoolType();
+
+            int meters;
+
+            if (partial.getProof().getDistance() == 100 || partial.getProof().getDistance() == 50){
+                meters = partial.getPartialNumber() * 25;
+            } else {
+                meters = partial.getPartialNumber() * 50;
+            }
+
             Float time = partial.getTime();
 
             groupedPartials

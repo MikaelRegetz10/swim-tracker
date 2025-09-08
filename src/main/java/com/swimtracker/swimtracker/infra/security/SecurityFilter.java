@@ -38,7 +38,7 @@ public class SecurityFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         } catch (UserNotFoundException ex) {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-            response.getWriter().write("{\"error\": \"Usuario nao encontrado\"}");
+            response.getWriter().write("{\"error\": \"Login não encontrado\"}");
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
         }
